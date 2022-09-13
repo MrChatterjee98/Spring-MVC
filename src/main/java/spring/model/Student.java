@@ -13,6 +13,7 @@ import lombok.ToString;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
 public class Student {
 	@Id
+	@GeneratedValue
 	private int studentId;
 	@Column(name ="fist_name")
 	private String firstName;
@@ -20,4 +21,10 @@ public class Student {
 	private String lastName;
 	
 	private int age;
+	
+	public Student(String fname,String lname,int age) {
+		this.firstName = fname;
+		this.lastName = lname;
+		this.age = age;
+	}
 }

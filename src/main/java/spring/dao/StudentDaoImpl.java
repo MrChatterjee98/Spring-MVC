@@ -23,10 +23,11 @@ public class StudentDaoImpl implements StudentDao {
 	
 
 	@Override
-	public void addStudent(Student student) {
+	public int addStudent(Student student) {
 		this.session = sessionFactory.getCurrentSession();
 		// TODO Auto-generated method stub
-		session.save(student);
+		return (int) session.save(student);
+		
 	}
 
 	@Override
@@ -63,10 +64,11 @@ public class StudentDaoImpl implements StudentDao {
 	}
 
 	@Override
-	public void updateStudent(Student student) {
+	public Student updateStudent(Student student) {
 		// TODO Auto-generated method stub
 		this.session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(student);
+		return student;
 	}
 
 	

@@ -2,14 +2,11 @@ package spring.service;
 
 import java.util.List;
 
-import javax.swing.text.View;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import spring.dao.StudentDao;
-import spring.dao.StudentDaoImpl;
 import spring.model.Student;
 
 
@@ -22,12 +19,19 @@ public class StudentService {
 	StudentDao dao;
 	
 	@Transactional
-	public void insert(Student student) {
-		 dao.addStudent(student);
+	public int insert(Student student) throws Exception {
+		if(student.getFirstName() == null || student.getLastName() == null || student.getAge() == 0)
+			throw new Exception();
+			
+		 return dao.addStudent(student);
 	}
 	@Transactional
-	public Student findStudent(int id) {
-		return dao.viewStudentById(id);
+	public Student findStudent(int id) throws Exception {
+		Student st = null; 
+		st = dao.viewStudentById(id);
+		if(st == null)
+			throw new Exception();
+		return st;
 	}
 	@Transactional
 	public List<Student> listAllStudent(){
@@ -40,7 +44,7 @@ public class StudentService {
 	public Student update(String id, String option,String value) {
 		int sid = Integer.parseInt(id);
 		Student st = dao.viewStudentById(sid);
-		//System.out.println(option);
+		System.out.println(st);
 		if(option.equalsIgnoreCase("age"))
 			st.setAge(Integer.parseInt(value));
 		else if(option.equalsIgnoreCase("firstName")) {

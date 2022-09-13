@@ -25,7 +25,7 @@ public class LoginService {
 		
 		if(user == null)
 			return false;
-		
+		//System.out.println(BCrypt.hashpw(Password, BCrypt.gensalt()));
 		return BCrypt.checkpw(Password, user.getPassword());
 	}
 	

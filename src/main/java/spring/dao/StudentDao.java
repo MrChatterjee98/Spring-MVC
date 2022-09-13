@@ -7,9 +7,9 @@ import spring.model.Student;
 public interface StudentDao {
 
 	
-	public void addStudent(Student student);
+	public int addStudent(Student student);
 	
-	public void updateStudent(Student student);
+	public Student updateStudent(Student student);
 	
 	public Student viewStudentById(int id);
 	

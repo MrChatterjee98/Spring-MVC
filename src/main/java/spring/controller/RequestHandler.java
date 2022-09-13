@@ -3,6 +3,7 @@ package spring.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,6 @@ public class RequestHandler {
 	@RequestMapping(path = "/")
 	public ModelAndView getMessage() {
 		ModelAndView mv =new ModelAndView("login");
-		
 		return mv;
 	}
 	
@@ -35,12 +35,13 @@ public class RequestHandler {
 	public ModelAndView getToLoginPage(@RequestParam("username") String uname,@RequestParam("password") String pass) {
 		ModelAndView mv;
 		if(loginService.loginValidation(uname, pass)) {
-		mv =new ModelAndView("index");
-		mv.addObject("student", new Student());
-		
+			mv =new ModelAndView("index");
+			mv.addObject("student", new Student());
 		}
-		else
+		else {
 			mv = new ModelAndView("ErrorPage");
+			mv.setStatus(HttpStatus.UNAUTHORIZED);
+		}
 		return mv;
 	}
 	
@@ -48,15 +49,13 @@ public class RequestHandler {
 	public ModelAndView insertStudent(@ModelAttribute("student") Student student) {
 		ModelAndView mv = new ModelAndView("demo");
 		try {
-		System.out.println(student);
-		service.insert(student);
-		
-		mv.addObject("message", "student successfully inserted");
-		
+			service.insert(student);
+			mv.addObject("message", "student successfully inserted");
 		}
 		catch(Exception ex) {
-		mv.addObject("message","and error occured");
-		ex.printStackTrace();
+			mv.addObject("message","an error occured");
+			mv.setStatus(HttpStatus.INTERNAL_SERVER_ERROR); 
+			ex.printStackTrace(); 
 		}
 		return mv;
 	}
@@ -64,13 +63,15 @@ public class RequestHandler {
 	@RequestMapping(path = "/find", method = RequestMethod.POST)
 	public ModelAndView findStudent(@RequestParam("studentId") int id) {
 		ModelAndView mv = new ModelAndView("studentinfo");
-		
+		try {
 		Student student = service.findStudent(id);
-		mv.addObject("student", student);
+		mv.addObject("student", student);}
+		catch(Exception ex) {
+			mv.setStatus(HttpStatus.NOT_FOUND);}
 		return mv;
 		
 	}
-	@RequestMapping(path = "/findall", method = RequestMethod.POST)
+	@RequestMapping(path = "/findall", method = RequestMethod.GET)
 	public ModelAndView viewStudents() {
 		ModelAndView mv = new ModelAndView("viewallstudents");
 		List<Student> students = service.listAllStudent();
@@ -95,8 +96,10 @@ public class RequestHandler {
 		String message;
 		if(service.delete(id))
 			message = "Student deleted successfully";
-		else
+		else {
 			message = "Student deletion unsuccessful";
+			mv.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		mv.addObject("message", message);
 		return mv;
 		
@@ -105,11 +108,15 @@ public class RequestHandler {
 	@RequestMapping(path = "/registration",method = RequestMethod.POST)
 	public ModelAndView registration(@ModelAttribute("login") LoginModel loginModel) {
 		ModelAndView mv = new ModelAndView("demo");
+		System.out.println(loginModel);
 		boolean flag = loginModel.getUsername().length() !=0 && loginModel.getPassword().length() !=0;
+		
 		if(loginService.registration(loginModel) && flag)
 			mv.addObject("message","Registration successful");
-		else
+		else {
 			mv.addObject("message","Registartion not successful");
+			mv.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		return mv;
 	}
 
