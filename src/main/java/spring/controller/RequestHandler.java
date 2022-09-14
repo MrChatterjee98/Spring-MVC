@@ -39,7 +39,7 @@ public class RequestHandler {
 			mv.addObject("student", new Student());
 		}
 		else {
-			mv = new ModelAndView("ErrorPage");
+			mv = new ModelAndView("errorpage");
 			mv.setStatus(HttpStatus.UNAUTHORIZED);
 		}
 		return mv;
@@ -47,7 +47,7 @@ public class RequestHandler {
 	
 	@RequestMapping(path = "/add",method = RequestMethod.POST)
 	public ModelAndView insertStudent(@ModelAttribute("student") Student student) {
-		ModelAndView mv = new ModelAndView("demo");
+		ModelAndView mv = new ModelAndView("resultpage");
 		try {
 			service.insert(student);
 			mv.addObject("message", "student successfully inserted");
@@ -92,7 +92,7 @@ public class RequestHandler {
 	
 	@RequestMapping(path = "/delete", method = RequestMethod.POST)
 	public ModelAndView deleteStudent(@RequestParam("studentId") int id) {
-		ModelAndView mv = new ModelAndView("demo");
+		ModelAndView mv = new ModelAndView("resultpage");
 		String message;
 		if(service.delete(id))
 			message = "Student deleted successfully";
@@ -107,7 +107,7 @@ public class RequestHandler {
 
 	@RequestMapping(path = "/registration",method = RequestMethod.POST)
 	public ModelAndView registration(@ModelAttribute("login") LoginModel loginModel) {
-		ModelAndView mv = new ModelAndView("demo");
+		ModelAndView mv = new ModelAndView("resultpage");
 		System.out.println(loginModel);
 		boolean flag = loginModel.getUsername().length() !=0 && loginModel.getPassword().length() !=0;
 		

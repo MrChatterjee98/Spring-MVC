@@ -87,14 +87,14 @@ body {
   		</div>
   		<button type="submit" class="btn btn-primary">Submit</button>
   		
-  	</form:form>
-  	<form:form style="margin-top:10px" action="/findall" method="post">
+  	</form:form >
+  	<form:form style="margin-top:10px" action="/findall" method="get">
   	<button type="submit" class="btn btn-success">Find All</button></form:form>
   </div>
   <div class="tab-pane fade" id="pills-update" role="tabpanel" aria-labelledby="pills-update-tab" tabindex="0">
 
   
-  	<form:form action="/update">
+  	<form:form action="/update" method="post">
   	<div class="mb-3">
     <label for="adminPass" class="form-label">Student Id</label>
     <input type="text" class="form-control" name="id"/>

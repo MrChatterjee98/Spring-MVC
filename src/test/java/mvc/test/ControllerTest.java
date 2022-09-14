@@ -37,7 +37,7 @@ public class ControllerTest {
 	@BeforeEach
 	public void setup() throws Exception {
 	    this.mvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
-	    this.username = "Test"+Math.ceil(Math.random()*10);
+	    this.username = "Test"+Math.ceil((int)Math.random()*10);
 	}
 	
 	@Test

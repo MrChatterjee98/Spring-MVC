@@ -35,10 +35,7 @@ public class StudentService {
 	}
 	@Transactional
 	public List<Student> listAllStudent(){
-		
-		
 			return dao.viewAllStudents();
-		
 	}
 	
 	public Student update(String id, String option,String value) {
